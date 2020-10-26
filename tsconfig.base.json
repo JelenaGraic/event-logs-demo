@@ -15,7 +15,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@event-logs/event-log": ["libs/event-log/src/index.ts"],
+      "@event-logs/data-access": ["libs/data-access/src/index.ts"],
+      "@event-logs/event": ["libs/event/src/index.ts"],
+      "@event-logs/material": ["libs/material/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

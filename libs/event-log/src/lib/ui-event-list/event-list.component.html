@@ -1,0 +1,17 @@
+<h3>Logs</h3>
+<div>
+    <cdk-virtual-scroll-viewport itemSize = "100" class="list-container" *ngIf = "events$ | async as events">
+        
+            <mat-list *cdkVirtualFor = "let event of events" class="event-list">
+                <mat-list-item>
+                {{event.name}}<br>
+                {{event.payload}}<br>
+                {{event.time | date: 'MMMM dd, y, hh:mm'}}
+                {{smt}}
+                <mat-divider></mat-divider>
+                </mat-list-item>     
+            </mat-list>    
+        
+    </cdk-virtual-scroll-viewport>
+    
+</div>

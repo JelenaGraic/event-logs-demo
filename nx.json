@@ -1,5 +1,5 @@
 {
-  "npmScope": "event-logs",
+  "npmScope": "demo",
   "affected": {
     "defaultBase": "master"
   },
@@ -23,12 +23,31 @@
     }
   },
   "projects": {
-    "event-logs": {
+    "demo": {
       "tags": []
     },
-    "event-logs-e2e": {
+    "demo-e2e": {
       "tags": [],
-      "implicitDependencies": ["event-logs"]
+      "implicitDependencies": ["demo"]
+    },
+    "demo": {
+      "tags": []
+    },
+    "demo-e2e": {
+      "tags": [],
+      "implicitDependencies": ["demo"]
+    },
+    "event-log": {
+      "tags": []
+    },
+    "data-access": {
+      "tags": []
+    },
+    "event": {
+      "tags": []
+    },
+    "material": {
+      "tags": []
     }
   }
 }
