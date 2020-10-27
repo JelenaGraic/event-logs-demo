@@ -3,7 +3,8 @@ import { Filter } from '../../+common/filters.model';
 import * as fromAcitions from '../actions/filters.action';
 
 export interface FilterState {
-  filter: Filter
+  filter: Filter,
+  page: number
 }
 
 export const initialState: FilterState = {
@@ -11,8 +12,8 @@ export const initialState: FilterState = {
     dateFrom: null,
     dateTo: new Date(Date.now()),
     logLavels: 'all'
-  }
-
+  },
+  page: 1
 }
 
 export const reduce = createReducer (
@@ -24,6 +25,14 @@ export const reduce = createReducer (
           filter: action.filters         
         }
       }
+    ),
+    on(fromAcitions.changePage,
+      (state, action) => {
+        return {
+          ...state,
+          page: action.page         
+        }
+      }
     )
 )
 
@@ -32,3 +41,4 @@ export function eventReducer (state: FilterState | undefined, action: Action) {
 }
 
 export const getFilters = (state: FilterState) => state.filter;
+export const getPage = (state: FilterState) => state.page;

@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {MatListModule} from '@angular/material/list';
     MatButtonModule,
     ScrollingModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatPaginatorModule
   ],
   exports: [
     MatDatepickerModule,
@@ -35,7 +37,8 @@ import {MatListModule} from '@angular/material/list';
     MatButtonModule,
     ScrollingModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatPaginatorModule
   ]
 })
 export class MaterialModule {}

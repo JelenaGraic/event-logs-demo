@@ -7,3 +7,13 @@
 .list-container {
     height: 500px;
 }
+
+.pagination ul {
+    display: flex;
+    list-style: none;
+    cursor: pointer;
+}
+
+.page-item {
+    margin-right: 5px;
+}

@@ -1,17 +1,27 @@
 <h3>Logs</h3>
 <div>
-    <cdk-virtual-scroll-viewport itemSize = "100" class="list-container" *ngIf = "events$ | async as events">
         
-            <mat-list *cdkVirtualFor = "let event of events" class="event-list">
-                <mat-list-item>
-                {{event.name}}<br>
-                {{event.payload}}<br>
-                {{event.time | date: 'MMMM dd, y, hh:mm'}}
-                {{smt}}
-                <mat-divider></mat-divider>
-                </mat-list-item>     
-            </mat-list>    
-        
-    </cdk-virtual-scroll-viewport>
-    
+    <mat-list *ngFor = "let event of events$ | async as events" class="event-list">
+        <mat-list-item>
+        {{event.name}}<br>
+        {{event.payload}}<br>
+        {{event.time | date: 'MMMM dd, y, hh:mm'}}
+        <mat-divider></mat-divider>
+        </mat-list-item>     
+    </mat-list>    
+ 
+</div>
+
+<div class="pagination">
+      <ul>        
+        <li class="page-item" (click)="pageSelected(activePage-1)" *ngIf="activePage>1">
+            <a>Previous</a>
+        </li>       
+        <li class="page-item" *ngFor="let i of pages" (click)="pageSelected(i)" [ngClass]="{'active': i==activePage}">
+            <a>{{i}}</a>
+        </li>        
+        <li class="page-item" (click)="pageSelected(activePage+1)" *ngIf="activePage<getNoPages()">
+            <a>Next</a>
+        </li>     
+      </ul>
 </div>

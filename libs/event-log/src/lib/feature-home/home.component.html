@@ -27,4 +27,10 @@
             
 </form>
 
-<event-logs-event-list [events$]="events$"></event-logs-event-list>
+<event-logs-event-list
+     [events$]="events$" [pageSize]="this.params.pageSize" 
+     [page]="this.params.page"
+     (onPageSelected)='changePage($event)'
+     [totalNumber] = "this.totalNumber"
+     >
+</event-logs-event-list>
