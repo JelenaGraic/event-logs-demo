@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Event } from '@event-logs/event';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
-const URL = 'http://localhost:3000/api/events';
 
 const EVENTS: Event[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
                          {id: 1, name: 'ev2', payload: 'payl2', logLevel: 'info', time: Date.now()},
@@ -28,16 +24,18 @@ export class EventService {
 
   private events: Event[] = [];
 
-  constructor(private http: HttpClient) { 
+  constructor() { 
     for (let event of EVENTS) {
       this.events.push(new Event(event));
     }
   }
 
-  events$ = this.getAll(this.events);
-
-  getAll (events: Event[]): Observable<Event[]> {
-    return of(events);
+  getAll (params? : any): Observable<Event[]> {
+      return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)))
+    }
+  
+  getTotalNumber () {
+    return this.events.length;
   }
 
 }
