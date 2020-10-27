@@ -31,7 +31,7 @@ export class EventService {
   }
 
   getAll (params? : any): Observable<Event[]> {
-      return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)))
+      return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)));
     }
   
   getTotalNumber () {
