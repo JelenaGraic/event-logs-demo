@@ -1,9 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Event } from '@event-logs/event';
 import { Observable, of } from 'rxjs';
 
+export class EventDto {
+  id: number;
+  name: string;
+  payload: string;
+  logLevel: string;
+  time: number;
 
-const EVENTS: Event[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
+  constructor(obj?: any) {
+      this.id = obj && obj.id || 0;
+      this.name = obj && obj.name || '';
+      this.payload = obj && obj.payload || '';
+      this.logLevel = obj && obj.logLavel || '';
+      this.time = obj && obj.time || 0;
+  }
+}
+
+
+const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
                          {id: 1, name: 'ev2', payload: 'payl2', logLevel: 'info', time: Date.now()},
                          {id: 2, name: 'ev3', payload: 'payl3', logLevel: 'worning', time: Date.now()},
                          {id: 3, name: 'ev4', payload: 'payl4', logLevel: 'alarm', time: Date.now()},
@@ -22,15 +37,15 @@ const EVENTS: Event[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm
 })
 export class EventService {
 
-  private events: Event[] = [];
+  private events: EventDto[] = [];
 
   constructor() { 
     for (let event of EVENTS) {
-      this.events.push(new Event(event));
+      this.events.push(new EventDto (event));
     }
   }
 
-  getAll (params? : any): Observable<Event[]> {
+  getAll (params? : any): Observable<EventDto[]> {
       return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)));
     }
   

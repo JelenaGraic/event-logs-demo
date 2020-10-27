@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import * as FromAppState from '../index';
-import { FilterState, getFilters, getPage } from '../reducers/filters.reducer';
+import { getFilters, getPage } from '../reducers/filters.reducer';
 
 
 export const getFilterState = createSelector(
