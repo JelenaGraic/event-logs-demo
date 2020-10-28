@@ -45,10 +45,10 @@ export class EventService {
     }
   }
 
-  getAll (params? : any): Observable<EventDto[]> {
+  getAll (params? : any): Observable<EventDto | EventDto[]> {
       return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)));
     }
-  
+
   getTotalNumber () {
     return this.events.length;
   }

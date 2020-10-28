@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { EventService } from '@event-logs/data-access';
+import { EventDto, EventService } from '@event-logs/data-access';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AppState } from '../+state/index';
 import { select, Store } from '@ngrx/store';
