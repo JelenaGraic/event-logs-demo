@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { EventService } from '@event-logs/data-access';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -7,14 +7,14 @@ import { select, Store } from '@ngrx/store';
 import * as fromAction from '../+state/actions/filters.action';
 import { Filter } from '../+common/filters.model';
 import { selectFilter, selectPage } from '../+state/selectors/filters.selector';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'event-logs-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   filterForm = new FormGroup ({
     dateFrom: new FormControl(''),
@@ -22,14 +22,15 @@ export class HomeComponent implements OnInit {
     allLogLevels: new FormControl('')
   });
 
-  events$;
+  result;
   filters$: Observable<Filter>;
   totalNumber: number;
+  filters: Subscription;
 
   params = {
     "page": 1,
     "pageSize": 5,
-    "logLavel": this.filterForm.controls['allLogLevels'].value,
+    "logLevel": this.filterForm.controls['allLogLevels'].value,
     "from": this.filterForm.controls['dateFrom'].value,
     "to": this.filterForm.controls['dateTo'].value,
     "sort": "name",
@@ -50,14 +51,19 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.filters$ = this.store.pipe(select(selectFilter));
-    this.filters$.subscribe((res) => this.filterForm.patchValue(res));
+    this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
     this.store.pipe(select(selectPage)).subscribe(data => this.params.page = data);    
     this.refresh(); 
-    this.totalNumber = this.service.getTotalNumber(); 
   }
 
   refresh() {
-    this.events$ = this.service.getAll(this.params);
+    this.service.getAll(this.params).subscribe(
+      data => {
+        this.result = data.events,
+        this.totalNumber = data.totalNumber
+        
+      }
+    )
   }
 
   addFilter (){
@@ -73,5 +79,9 @@ export class HomeComponent implements OnInit {
     this.params.page = newPage;
     this.refresh();
     this.store.dispatch(fromAction.changePage({page: newPage}))
+  }
+
+  ngOnDestroy() {
+    this.filters.unsubscribe();
   }
 }

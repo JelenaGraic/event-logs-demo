@@ -1,10 +1,10 @@
-export class Event {
+export class EventDto {
     id: number;
     name: string;
     payload: string;
     logLevel: string;
     time: number;
-
+  
     constructor(obj?: any) {
         this.id = obj && obj.id || 0;
         this.name = obj && obj.name || '';
@@ -12,4 +12,4 @@ export class Event {
         this.logLevel = obj && obj.logLavel || '';
         this.time = obj && obj.time || 0;
     }
-}
+  }

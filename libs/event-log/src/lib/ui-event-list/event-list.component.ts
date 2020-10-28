@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../+state/index';
 import { changePage } from '../+state/actions/filters.action';
@@ -10,7 +10,7 @@ import { changePage } from '../+state/actions/filters.action';
 })
 export class EventListComponent implements OnInit {
 
-  @Input() events$;
+  @Input() result;
   @Input() pageSize;
   @Input() page;
   activePage =1;
@@ -23,8 +23,6 @@ export class EventListComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.page); 
-    console.log(this.totalNumber);
 
     this.pages = [];
     for (let i = 1; i <= this.getNoPages(); i++){

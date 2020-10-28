@@ -1,11 +1,11 @@
 <h3>Logs</h3>
 <div>
         
-    <mat-list *ngFor = "let event of events$ | async as events" class="event-list">
+    <mat-list *ngFor = "let item of result" class="event-list">
         <mat-list-item>
-        {{event.name}}<br>
-        {{event.payload}}<br>
-        {{event.time | date: 'MMMM dd, y, hh:mm'}}
+        {{item.name}}<br>
+        {{item.payload}}<br>
+        {{item.time | date: 'MMMM dd, y, hh:mm'}}
         <mat-divider></mat-divider>
         </mat-list-item>     
     </mat-list>    
