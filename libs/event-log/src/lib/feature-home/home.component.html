@@ -1,4 +1,4 @@
-<form [formGroup]="filterForm" class="form">
+<!-- <form [formGroup]="filterForm" class="form">
     <mat-form-field  appearance="fill">
         <input matInput [matDatepicker]="picker1" formControlName="dateFrom">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -25,7 +25,13 @@
         <button mat-flat-button (click)="addFilter()">Apply filter</button>
     </div> 
             
-</form>
+</form> -->
+
+<demo-ui-events-filter 
+    (filterFields)="changeFilters($event)"
+    [filters$]="filters$"
+    >
+</demo-ui-events-filter>
 
 <event-logs-event-list
      [result]="result" [pageSize]="this.params.pageSize" 
