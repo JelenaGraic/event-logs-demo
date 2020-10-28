@@ -1,21 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-
-export class EventDto {
-  id: number;
-  name: string;
-  payload: string;
-  logLevel: string;
-  time: number;
-
-  constructor(obj?: any) {
-      this.id = obj && obj.id || 0;
-      this.name = obj && obj.name || '';
-      this.payload = obj && obj.payload || '';
-      this.logLevel = obj && obj.logLavel || '';
-      this.time = obj && obj.time || 0;
-  }
-}
+import { EventDto } from './eventDto';
 
 
 const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},

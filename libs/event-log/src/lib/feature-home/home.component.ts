@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { EventDto, EventService } from '@event-logs/data-access';
+import { EventService } from '@event-logs/data-access';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AppState } from '../+state/index';
 import { select, Store } from '@ngrx/store';
 import * as fromAction from '../+state/actions/filters.action';
 import { Filter } from '../+common/filters.model';
 import { selectFilter, selectPage } from '../+state/selectors/filters.selector';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'event-logs-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   filterForm = new FormGroup ({
     dateFrom: new FormControl(''),
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   events$;
   filters$: Observable<Filter>;
   totalNumber: number;
+  filters: Subscription;
 
   params = {
     "page": 1,
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.filters$ = this.store.pipe(select(selectFilter));
-    this.filters$.subscribe((res) => this.filterForm.patchValue(res));
+    this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
     this.store.pipe(select(selectPage)).subscribe(data => this.params.page = data);    
     this.refresh(); 
     this.totalNumber = this.service.getTotalNumber(); 
@@ -73,5 +74,9 @@ export class HomeComponent implements OnInit {
     this.params.page = newPage;
     this.refresh();
     this.store.dispatch(fromAction.changePage({page: newPage}))
+  }
+
+  ngOnDestroy() {
+    this.filters.unsubscribe();
   }
 }
