@@ -1,6 +1,7 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { Filter } from '../../+common/filters.model';
+import { Filter, EventLogLevel } from '../../+common/filters.model';
 import * as fromAcitions from '../actions/filters.action';
+
 
 export interface FilterState {
   filter: Filter,
@@ -11,7 +12,7 @@ export const initialState: FilterState = {
   filter: {
     dateFrom: null,
     dateTo: new Date(Date.now()),
-    logLavels: 'all'
+    logLevels: null
   },
   page: 1
 }
