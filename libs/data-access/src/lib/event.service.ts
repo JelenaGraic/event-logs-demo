@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { EventDto } from './eventDto';
+import { EventPagedResponse } from './eventPagedResponse';
 
 
 const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
@@ -22,20 +23,31 @@ const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'al
 })
 export class EventService {
 
-  private events: EventDto[] = [];
+  private eventsResponse: EventPagedResponse ={
+    events: [],
+    page: 1,
+    pageSize: 5,
+    totalNumber: 5
+  };
 
   constructor() { 
     for (let event of EVENTS) {
-      this.events.push(new EventDto (event));
+      this.eventsResponse.events.push(new EventDto (event));
     }
+    this.eventsResponse.totalNumber = this.eventsResponse.events.length;
   }
 
-  getAll (params? : any): Observable<EventDto | EventDto[]> {
-      return of (this.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)));
-    }
+  getAll (params? : any): Observable<EventPagedResponse> {
 
-  getTotalNumber () {
-    return this.events.length;
-  }
+    let result = new EventPagedResponse(this.eventsResponse);   
+
+    return of (new EventPagedResponse ({
+      events: result.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)),
+      totalNumber: result.totalNumber,
+      page: result.page,
+      pageSize: result.pageSize
+    }))
+
+    }
 
 }

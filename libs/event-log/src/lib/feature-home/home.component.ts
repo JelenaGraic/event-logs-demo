@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     allLogLevels: new FormControl('')
   });
 
-  events$;
+  result;
   filters$: Observable<Filter>;
   totalNumber: number;
   filters: Subscription;
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   params = {
     "page": 1,
     "pageSize": 5,
-    "logLavel": this.filterForm.controls['allLogLevels'].value,
+    "logLevel": this.filterForm.controls['allLogLevels'].value,
     "from": this.filterForm.controls['dateFrom'].value,
     "to": this.filterForm.controls['dateTo'].value,
     "sort": "name",
@@ -54,11 +54,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
     this.store.pipe(select(selectPage)).subscribe(data => this.params.page = data);    
     this.refresh(); 
-    this.totalNumber = this.service.getTotalNumber(); 
   }
 
   refresh() {
-    this.events$ = this.service.getAll(this.params);
+    this.service.getAll(this.params).subscribe(
+      data => {
+        this.result = data.events,
+        this.totalNumber = data.totalNumber
+        
+      }
+    )
   }
 
   addFilter (){
