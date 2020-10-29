@@ -17,19 +17,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   result;
   totalNumber: number;
   filters$: Observable<Filter>;
-  eventList: Subscription;
+
+  eventListSub: Subscription;
+  pageSub: Subscription;
+
+  page: number;
+  pageSize= 5;
+  filters: Filter;
+  sort = "name";
+  sortDirection = "asc";
 
   dateFrom;
   dateTo;
   logLevels;
-
-  params = {
-    "page": 1,
-    "pageSize": 5,
-    "filters": {},
-    "sort": "name",
-    "sortDirection": "asc"
-  }
 
   constructor(private service: EventService, private store: Store<AppState>) {
 
@@ -37,12 +37,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.filters$ = this.store.pipe(select(selectFilter));
-    this.store.pipe(select(selectPage)).subscribe(data => this.params.page = data);    
+    this.pageSub = this.store.pipe(select(selectPage)).subscribe(data => this.page = data);    
     this.refresh(); 
   }
 
   refresh() {
-    this.eventList =this.service.getAll(this.params).subscribe(
+    this.eventListSub =this.service.getAll(this.page, this.pageSize, this.sort, this.sortDirection, this.filters).subscribe(
       data => {
         this.result = data.events,
         this.totalNumber = data.totalNumber       
@@ -51,17 +51,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   changePage (newPage: number) {
-    this.params.page = newPage;
+    this.page = newPage;
     this.refresh();
     this.store.dispatch(fromAction.changePage({page: newPage}))
   }
 
   ngOnDestroy() {
-    this.eventList.unsubscribe();
+    this.eventListSub.unsubscribe();
+    this.pageSub.unsubscribe();
   }
 
   changeFilters (event) {
     this.store.dispatch(fromAction.filterEvents({filters: event})); 
-    this.params.filters = event;
+    this.filters = event;
   }
 }
