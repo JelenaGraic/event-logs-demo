@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { EventDto } from './eventDto';
 import { EventPagedResponse } from './eventPagedResponse';
+import { Filter } from '../../../event-log/src/lib/+common/filters.model';
 
 
 const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
@@ -37,12 +38,12 @@ export class EventService {
     this.eventsResponse.totalNumber = this.eventsResponse.events.length;
   }
 
-  getAll (params? : any): Observable<EventPagedResponse> {
+  getAll (page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter): Observable<EventPagedResponse> {
 
     let result = new EventPagedResponse(this.eventsResponse);   
 
     return of (new EventPagedResponse ({
-      events: result.events.slice((params.page*params.pageSize - params.pageSize) , (params.page*params.pageSize)),
+      events: result.events.slice((page*pageSize - pageSize) , (page*pageSize)),
       totalNumber: result.totalNumber,
       page: result.page,
       pageSize: result.pageSize

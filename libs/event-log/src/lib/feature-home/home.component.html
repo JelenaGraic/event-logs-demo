@@ -1,35 +1,12 @@
-<form [formGroup]="filterForm" class="form">
-    <mat-form-field  appearance="fill">
-        <input matInput [matDatepicker]="picker1" formControlName="dateFrom">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker> 
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker2" formControlName="dateTo">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>  
-    </mat-form-field>
-            
-    <mat-form-field>
-        <mat-select formControlName="allLogLevels">
-            <mat-option value="all">All</mat-option>
-            <mat-option value="info">Info</mat-option>
-            <mat-option value="warning">Warning</mat-option>
-            <mat-option value="alarm">Alarm</mat-option>
-        </mat-select>  
-    </mat-form-field>
-
-    <div class="buttons">
-        <button mat-flat-button>Clear filter</button>
-        <button mat-flat-button (click)="addFilter()">Apply filter</button>
-    </div> 
-            
-</form>
+<demo-ui-events-filter 
+    (filterFields)="changeFilters($event)"
+    [filters$]="filters$"
+    >
+</demo-ui-events-filter>
 
 <event-logs-event-list
-     [result]="result" [pageSize]="this.params.pageSize" 
-     [page]="this.params.page"
+     [result]="result" [pageSize]="this.pageSize" 
+     [page]="this.page"
      (onPageSelected)='changePage($event)'
      [totalNumber] = "totalNumber"
      >
