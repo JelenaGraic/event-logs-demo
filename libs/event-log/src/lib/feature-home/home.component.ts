@@ -1,10 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EventService } from '@event-logs/data-access';
-import { AppState } from '../+state/index';
-import { select, Store } from '@ngrx/store';
-import * as fromAction from '../+state/actions/filters.action';
+import { Component, OnInit } from '@angular/core';
 import { Filter } from '../+common/filters.model';
-import { selectFilter, selectPage } from '../+state/selectors/filters.selector';
 import { Observable, Subscription } from 'rxjs';
 import { EventLogsFacade } from '../+state/event-logs.facade';
 
@@ -13,14 +8,11 @@ import { EventLogsFacade } from '../+state/event-logs.facade';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   eventResult$;
   totalNumber: number;
   filters$: Observable<Filter>;
-
-  eventListSub: Subscription;
-  pageSub: Subscription;
 
   page: number;
   pageSize= 5;
@@ -32,13 +24,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   dateTo;
   logLevels;
 
-  constructor(private service: EventService, private store: Store<AppState>, private eventLogFacade: EventLogsFacade) {
+  constructor(private eventLogFacade: EventLogsFacade) {
 
    }
 
   ngOnInit(): void {
-    this.filters$ = this.store.pipe(select(selectFilter));
-    this.pageSub = this.store.pipe(select(selectPage)).subscribe(data => this.page = data);    
+    this.filters$ = this.eventLogFacade.filters$;
+    this.page = this.eventLogFacade.page;   
     this.refresh(); 
   }
 
@@ -49,16 +41,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   changePage (newPage: number) {
     this.page = newPage;
     this.refresh();
-    this.store.dispatch(fromAction.changePage({page: newPage}))
-  }
-
-  ngOnDestroy() {
-    this.eventListSub.unsubscribe();
-    this.pageSub.unsubscribe();
+    this.eventLogFacade.changePage(newPage);
   }
 
   changeFilters (event) {
-    this.store.dispatch(fromAction.filterEvents({filters: event})); 
+    this.eventLogFacade.changeFilters(event);
     this.filters = event;
+  }
+
+  putNewPage(page: number) {
+    this.eventLogFacade.changePage(page);
   }
 }

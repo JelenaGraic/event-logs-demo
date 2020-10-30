@@ -6,7 +6,7 @@
 
 <event-logs-event-list
      [result$]="eventResult$" [pageSize]="this.pageSize" 
-     [page]="this.page"
+     (changePage)="putNewPage($event)"
      (onPageSelected)='changePage($event)'
     
 >
