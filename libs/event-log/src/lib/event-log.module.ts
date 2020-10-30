@@ -9,10 +9,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './+state/index';
 import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.component';
+import { EventLogsFacade } from './+state/event-logs.facade';
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     DataAccessModule,
     MaterialModule,
     HttpClientModule,
@@ -21,6 +22,14 @@ import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.com
     StoreModule.forFeature('appState', reducers)
   ],
   declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent],
-  exports: [HomeComponent, EventListComponent, HttpClientModule,FormsModule, ReactiveFormsModule, UiEventsFilterComponent],
+  exports: [
+    HomeComponent,
+    EventListComponent,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    UiEventsFilterComponent,
+  ],
+  providers: [EventLogsFacade],
 })
 export class EventLogModule {}

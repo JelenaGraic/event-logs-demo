@@ -6,6 +6,7 @@ import * as fromAction from '../+state/actions/filters.action';
 import { Filter } from '../+common/filters.model';
 import { selectFilter, selectPage } from '../+state/selectors/filters.selector';
 import { Observable, Subscription } from 'rxjs';
+import { EventLogsFacade } from '../+state/event-logs.facade';
 
 @Component({
   selector: 'event-logs-home',
@@ -14,7 +15,7 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  result;
+  eventResult$;
   totalNumber: number;
   filters$: Observable<Filter>;
 
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   dateTo;
   logLevels;
 
-  constructor(private service: EventService, private store: Store<AppState>) {
+  constructor(private service: EventService, private store: Store<AppState>, private eventLogFacade: EventLogsFacade) {
 
    }
 
@@ -42,12 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.eventListSub =this.service.getAll(this.page, this.pageSize, this.sort, this.sortDirection, this.filters).subscribe(
-      data => {
-        this.result = data.events,
-        this.totalNumber = data.totalNumber       
-      }
-    )
+    this.eventResult$ = this.eventLogFacade.getAll(this.page, this.pageSize, this.sort, this.sortDirection, this.filters);
   }
 
   changePage (newPage: number) {

@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { Store } from '@ngrx/store';
 import { AppState } from '../+state/index';
 import { changePage } from '../+state/actions/filters.action';
+import { Observable } from 'rxjs';
+import { EventPagedResponse } from '../../../../data-access/src/lib/eventPagedResponse';
 
 @Component({
   selector: 'event-logs-event-list',
@@ -10,11 +12,11 @@ import { changePage } from '../+state/actions/filters.action';
 })
 export class EventListComponent implements OnInit {
 
-  @Input() result;
+  @Input() result$: Observable<EventPagedResponse>;
   @Input() pageSize;
   @Input() page;
   activePage =1;
-  @Input() totalNumber;
+  totalNumber;
   @Output() onPageSelected: EventEmitter<number>;
   pages: number[];
 
@@ -30,8 +32,8 @@ export class EventListComponent implements OnInit {
     } 
   }
 
-   getNoPages() :number{
-     return Math.ceil(this.totalNumber/this.pageSize);
+   getNoPages(): number {
+    return Math.ceil(this.totalNumber/this.pageSize)    
   }
 
   changePage(page: number) {
