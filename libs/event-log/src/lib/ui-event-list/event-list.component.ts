@@ -1,27 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../+state/index';
-import { Observable } from 'rxjs';
-import { EventPagedResponse } from '../../../../data-access/src/lib/eventPagedResponse';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { EventPagedResponseDto } from '../../../../data-access/src/lib/dto-models/eventPagedResponseDto';
 
 @Component({
   selector: 'event-logs-event-list',
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.scss']
 })
-export class EventListComponent implements OnInit, OnDestroy {
+export class EventListComponent implements OnInit {
 
-  @Input() result$: Observable<EventPagedResponse>;
+  @Input() result$: Observable<EventPagedResponseDto>;
   @Input() pageSize;
+  @Input() totalNumber;
 
-  activePage =1;
-  totalNumber;
   @Output() onPageSelected: EventEmitter<number>;
   @Output() page: EventEmitter<number>;
   pages: number[];
-  //totalNumberSub = Subscription;
+  totalNumberSub = Subscription;
 
-  constructor(private store: Store<AppState>) {
+  activePage =1;
+
+  constructor() {
     this.onPageSelected = new EventEmitter();
     this.page = new EventEmitter();
    }
@@ -34,8 +33,9 @@ export class EventListComponent implements OnInit, OnDestroy {
   }
 
    getNoPages(): number {
-    this.result$.subscribe((res) => this.totalNumber = res.totalNumber);  
-    return Math.ceil(this.totalNumber/this.pageSize) ;   
+    return Math.ceil(this.totalNumber/this.pageSize) ;
+    
+    
   }
 
   changePage(newPage: number) {
@@ -47,10 +47,6 @@ export class EventListComponent implements OnInit, OnDestroy {
       this.activePage = newPage;
       this.onPageSelected.emit(this.activePage);
     }
-  }
-
-  ngOnDestroy(){
-
   }
 
 }

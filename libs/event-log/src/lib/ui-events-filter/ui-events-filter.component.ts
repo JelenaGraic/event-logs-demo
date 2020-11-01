@@ -11,8 +11,9 @@ import { Filter } from '../+common/filters.model';
 })
 export class UiEventsFilterComponent implements OnInit, OnDestroy {
 
-   @Output() filterFields: EventEmitter<Filter>;
-   @Input() filters$;
+  @Output() filterFields: EventEmitter<Filter>;
+  @Input() filters$;
+
   filters: Subscription;
 
 

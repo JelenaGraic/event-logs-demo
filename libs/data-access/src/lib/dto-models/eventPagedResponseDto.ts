@@ -1,6 +1,6 @@
 import { EventDto } from './eventDto';
 
-export class EventPagedResponse {
+export class EventPagedResponseDto {
     events: EventDto[];
     page: number;
     pageSize: number;

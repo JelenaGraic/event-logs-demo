@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Filter } from '../+common/filters.model';
 import { Observable, Subscription } from 'rxjs';
 import { EventLogsFacade } from '../+state/event-logs.facade';
@@ -8,10 +8,9 @@ import { EventLogsFacade } from '../+state/event-logs.facade';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   eventResult$;
-  totalNumber: number;
   filters$: Observable<Filter>;
 
   page: number;
@@ -24,6 +23,9 @@ export class HomeComponent implements OnInit {
   dateTo;
   logLevels;
 
+  countSub: Subscription;
+  count: number;
+
   constructor(private eventLogFacade: EventLogsFacade) {
 
    }
@@ -32,6 +34,8 @@ export class HomeComponent implements OnInit {
     this.filters$ = this.eventLogFacade.filters$;
     this.page = this.eventLogFacade.page;   
     this.refresh(); 
+
+    this.countSub = this.eventResult$.subscribe(data => this.count = data.totalNumber);
   }
 
   refresh() {
@@ -51,5 +55,9 @@ export class HomeComponent implements OnInit {
 
   putNewPage(page: number) {
     this.eventLogFacade.changePage(page);
+  }
+
+  ngOnDestroy() {
+    this.countSub.unsubscribe();
   }
 }

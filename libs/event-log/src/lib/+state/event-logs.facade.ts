@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { EventService } from '@event-logs/data-access';
-import { select, Store, Action } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as fromEventLogs from './reducers/filters.reducer';
 import * as EventLogsSelectors from './selectors/filters.selector';
 import * as fromEventActions from './actions/filters.action';
