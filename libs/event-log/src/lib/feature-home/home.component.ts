@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Filter } from '../+common/filters.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { EventLogsFacade } from '../+state/event-logs.facade';
+import { EventPagedResponseVM } from '../+state/view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
-  eventResult$;
+  eventResult$: Observable<EventPagedResponseVM>;
   filters$: Observable<Filter>;
 
   page: number;
@@ -23,9 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   dateTo;
   logLevels;
 
-  countSub: Subscription;
-  count: number;
-
   constructor(private eventLogFacade: EventLogsFacade) {
 
    }
@@ -34,8 +32,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filters$ = this.eventLogFacade.filters$;
     this.page = this.eventLogFacade.page;   
     this.refresh(); 
-
-    this.countSub = this.eventResult$.subscribe(data => this.count = data.totalNumber);
   }
 
   refresh() {
@@ -57,7 +53,4 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.eventLogFacade.changePage(page);
   }
 
-  ngOnDestroy() {
-    this.countSub.unsubscribe();
-  }
 }

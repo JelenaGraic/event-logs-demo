@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -7,7 +7,8 @@ import { Filter } from '../+common/filters.model';
 @Component({
   selector: 'demo-ui-events-filter',
   templateUrl: './ui-events-filter.component.html',
-  styleUrls: ['./ui-events-filter.component.scss']
+  styleUrls: ['./ui-events-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UiEventsFilterComponent implements OnInit, OnDestroy {
 

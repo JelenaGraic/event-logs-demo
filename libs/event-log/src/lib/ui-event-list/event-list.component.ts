@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { EventPagedResponseDto } from '../../../../data-access/src/lib/dto-models/eventPagedResponseDto';
+import { EventPagedResponseVM } from '../+state/view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-event-list',
   templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.scss']
+  styleUrls: ['./event-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventListComponent implements OnInit {
 
-  @Input() result$: Observable<EventPagedResponseDto>;
+  @Input() result$: Observable<EventPagedResponseVM>;
   @Input() pageSize;
   @Input() totalNumber;
 

@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { Filter, EventLogLevel } from '../../+common/filters.model';
+import { Filter } from '../../+common/filters.model';
 import * as fromAcitions from '../actions/filters.action';
 
 

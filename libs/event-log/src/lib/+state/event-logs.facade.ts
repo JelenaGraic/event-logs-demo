@@ -5,6 +5,8 @@ import * as fromEventLogs from './reducers/filters.reducer';
 import * as EventLogsSelectors from './selectors/filters.selector';
 import * as fromEventActions from './actions/filters.action';
 import { Filter } from '../+common/filters.model';
+import { EventPagedResponseVM } from './view-models/eventPagedResponseVM';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -14,10 +16,12 @@ export class EventLogsFacade implements OnDestroy {
   page;
   pageSub = this.store.pipe(select(EventLogsSelectors.selectPage)).subscribe(data => this.page = data);
 
+  eventPagedResponse$: Observable<EventPagedResponseVM>;
+
   constructor(private store: Store<fromEventLogs.FilterState>, private service: EventService) {}
 
-  getAll (page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter) {
-    return this.service.getAll(page, pageSize, sort, sortDirection, filters);
+  getAll (page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter): Observable<EventPagedResponseVM> {
+     return this.service.getAll(page, pageSize, sort, sortDirection, filters);
   }
   
   changePage(page: number) {

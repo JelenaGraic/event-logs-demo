@@ -7,7 +7,7 @@
 <event-logs-event-list
      [result$]="eventResult$" 
      [pageSize]="this.pageSize" 
-     [totalNumber]="this.count"
+     [totalNumber]="(eventResult$ | async)?.totalNumber"
      (changePage)="putNewPage($event)"
      (onPageSelected)='changePage($event)'
     
