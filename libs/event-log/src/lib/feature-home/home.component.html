@@ -5,9 +5,8 @@
 </demo-ui-events-filter>
 
 <event-logs-event-list
-     [result$]="eventResult$" 
+     [result]="eventResult$|async" 
      [pageSize]="this.pageSize" 
-     [totalNumber]="(eventResult$ | async)?.totalNumber"
      (changePage)="putNewPage($event)"
      (onPageSelected)='changePage($event)'
     

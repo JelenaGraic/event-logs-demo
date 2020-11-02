@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Filter } from '../+common/filters.model';
 import { Observable } from 'rxjs';
 import { EventLogsFacade } from '../+state/event-logs.facade';
-import { EventPagedResponseVM } from '../+state/view-models/eventPagedResponseVM';
+import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-home',

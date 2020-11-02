@@ -5,31 +5,31 @@ import * as fromEventLogs from './reducers/filters.reducer';
 import * as EventLogsSelectors from './selectors/filters.selector';
 import * as fromEventActions from './actions/filters.action';
 import { Filter } from '../+common/filters.model';
-import { EventPagedResponseVM } from './view-models/eventPagedResponseVM';
+import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
 import { Observable } from 'rxjs';
 
 
 @Injectable()
 export class EventLogsFacade implements OnDestroy {
 
-  filters$ = this.store.pipe(select(EventLogsSelectors.selectFilter));
+  filters$ = this.filterStore.pipe(select(EventLogsSelectors.selectFilter));
   page;
-  pageSub = this.store.pipe(select(EventLogsSelectors.selectPage)).subscribe(data => this.page = data);
+  pageSub = this.filterStore.pipe(select(EventLogsSelectors.selectPage)).subscribe(data => this.page = data);
 
   eventPagedResponse$: Observable<EventPagedResponseVM>;
 
-  constructor(private store: Store<fromEventLogs.FilterState>, private service: EventService) {}
+  constructor(private filterStore: Store<fromEventLogs.FilterState>, private eventService: EventService) {}
 
   getAll (page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter): Observable<EventPagedResponseVM> {
-     return this.service.getAll(page, pageSize, sort, sortDirection, filters);
+     return this.eventService.getAll(page, pageSize, sort, sortDirection, filters);
   }
   
   changePage(page: number) {
-    this.store.dispatch(fromEventActions.changePage({page}));
+    this.filterStore.dispatch(fromEventActions.changePage({page}));
   }
 
   changeFilters(filters: Filter) {
-    this.store.dispatch(fromEventActions.filterEvents({filters}));
+    this.filterStore.dispatch(fromEventActions.filterEvents({filters}));
   }
 
   ngOnDestroy() {

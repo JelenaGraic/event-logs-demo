@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { EventPagedResponseVM } from '../+state/view-models/eventPagedResponseVM';
+import { Subscription } from 'rxjs';
+import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-event-list',
@@ -10,9 +10,8 @@ import { EventPagedResponseVM } from '../+state/view-models/eventPagedResponseVM
 })
 export class EventListComponent implements OnInit {
 
-  @Input() result$: Observable<EventPagedResponseVM>;
+  @Input() result: EventPagedResponseVM;
   @Input() pageSize;
-  @Input() totalNumber;
 
   @Output() onPageSelected: EventEmitter<number>;
   @Output() page: EventEmitter<number>;
@@ -34,7 +33,7 @@ export class EventListComponent implements OnInit {
   }
 
    getNoPages(): number {
-    return Math.ceil(this.totalNumber/this.pageSize) ;
+    return Math.ceil(this.result.totalNumber/this.pageSize) ;
     
     
   }
