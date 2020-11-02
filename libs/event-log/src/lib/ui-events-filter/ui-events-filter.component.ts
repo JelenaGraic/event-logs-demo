@@ -12,43 +12,43 @@ import { Filter } from '../+common/filters.model';
 })
 export class UiEventsFilterComponent implements OnInit, OnDestroy {
 
-  @Output() filterFields: EventEmitter<Filter>;
-  @Input() filters$;
+  // @Output() filterFields: EventEmitter<Filter>;
+  // @Input() filters$;
 
-  filters: Subscription;
+  // filters: Subscription;
 
 
-  filterForm = new FormGroup ({
-    dateFrom: new FormControl(''),
-    dateTo: new FormControl(''),
-    logLevels: new FormControl('')
-  });
+  // filterForm = new FormGroup ({
+  //   dateFrom: new FormControl(''),
+  //   dateTo: new FormControl(''),
+  //   logLevels: new FormControl('')
+  // });
 
-  constructor(private fb: FormBuilder) {
-    this.filterFields = new EventEmitter();
-    this.createForm();
-   }
+  // constructor(private fb: FormBuilder) {
+  //   this.filterFields = new EventEmitter();
+  //   this.createForm();
+  //  }
  
-   createForm() {
-    this.filterForm = this.fb.group({
-      dateFrom:'',
-      dateTo: '',
-      logLevels: 'all'
-    })
-  }
+  //  createForm() {
+  //   this.filterForm = this.fb.group({
+  //     dateFrom:'',
+  //     dateTo: '',
+  //     logLevels: 'all'
+  //   })
+  // }
   
 
-  ngOnInit(): void {
-    this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
-  }
+   ngOnInit(): void {
+  //   this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
+   }
 
-  sendFilter() {
-    let filters: Filter = this.filterForm.value;
-    this.filterFields.emit(filters);
-  }
+  // sendFilter() {
+  //   let filters: Filter = this.filterForm.value;
+  //   this.filterFields.emit(filters);
+  // }
   
-  ngOnDestroy() {
-    this.filters.unsubscribe();
-  }
+   ngOnDestroy() {
+  //   this.filters.unsubscribe();
+   }
 
 }

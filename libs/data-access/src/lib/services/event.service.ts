@@ -38,16 +38,20 @@ export class EventService {
     this.eventsResponse.totalNumber = this.eventsResponse.events.length;
   }
 
-  getAll (page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter): Observable<EventPagedResponseDto> {
+  getAll (
+    //page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter
+    ): Observable<EventDto[]> {
 
-    let result = new EventPagedResponseDto(this.eventsResponse);   
+      return of(this.eventsResponse.events) ;
 
-    return of (new EventPagedResponseDto ({
-      events: result.events.slice((page*pageSize - pageSize) , (page*pageSize)),
-      totalNumber: result.totalNumber,
-      page: result.page,
-      pageSize: result.pageSize
-    }))
+    // let result = new EventPagedResponseDto(this.eventsResponse);   
+
+    // return of (new EventPagedResponseDto ({
+    //   events: result.events.slice((page*pageSize - pageSize) , (page*pageSize)),
+    //   totalNumber: result.totalNumber,
+    //   page: result.page,
+    //   pageSize: result.pageSize
+    // }))
 
     }
 
