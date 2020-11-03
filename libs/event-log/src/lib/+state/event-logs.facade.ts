@@ -6,17 +6,17 @@ import * as EventLogsSelectors from './selectors/filters.selector';
 import * as fromEventActions from './actions/filters.action';
 import { Filter } from '../+common/filters.model';
 import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
-import { BehaviorSubject, Observable, pipe } from 'rxjs';
+import { BehaviorSubject, Observable, pipe, Subscription } from 'rxjs';
 import { EventVM } from '../view-models/eventVM';
 import { map, tap } from 'rxjs/operators';
 
 
 @Injectable()
-export class EventLogsFacade //implements OnDestroy 
+export class EventLogsFacade 
 {
 
-  private result = new BehaviorSubject<EventVM[]>([]);
-  eventResponse$ = this.result.asObservable(); 
+  private eventLogsSubject = new BehaviorSubject<EventVM[]>([]);
+  eventLogs$ = this.eventLogsSubject.asObservable(); 
 
   // filters$ = this.filterStore.pipe(select(EventLogsSelectors.selectFilter));
   // page;
@@ -25,18 +25,22 @@ export class EventLogsFacade //implements OnDestroy
  
 
   constructor(private filterStore: Store<fromEventLogs.FilterState>, private eventService: EventService) {
+  }
+
+  getAll () {     
+    this.eventService.getAll().subscribe(data => this.eventLogsSubject.next(data));
+  }
+
+  getPage() {
 
   }
 
-  getAll (
-    //page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter
-    ) {
-      
-       this.eventService.getAll().subscribe(data => this.result.next(data))
-            
-    //  return this.eventService.getAll(
-       //page, pageSize, sort, sortDirection, filters
-      //  );
+  getFilter() {
+
+  }
+
+  setSort() {
+
   }
   
   // changePage(page: number) {
@@ -47,8 +51,8 @@ export class EventLogsFacade //implements OnDestroy
   //   this.filterStore.dispatch(fromEventActions.filterEvents({filters}));
   // }
 
-  // ngOnDestroy() {
-  //   this.pageSub.unsubscribe();
-  // }
+  //  ngOnDestroy() {
+  //    this.pageSub.unsubscribe();
+  //  }
 
 }

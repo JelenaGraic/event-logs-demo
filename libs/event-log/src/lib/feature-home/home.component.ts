@@ -12,14 +12,14 @@ import { EventVM } from '../view-models/eventVM';
 })
 export class HomeComponent implements OnInit {
 
-  eventResult$: Observable<EventVM[]> = this.eventLogFacade.eventResponse$;
+  eventResult$: Observable<EventVM[]> = this.eventLogFacade.eventLogs$;
   filters$: Observable<Filter>;
 
-  page: number;
-  pageSize= 5;
-  filters: Filter;
-  sort = "name";
-  sortDirection = "asc";
+  // page: number;
+  // pageSize= 5;
+  // filters: Filter;
+  // sort = "name";
+  // sortDirection = "asc";
 
   dateFrom;
   dateTo;

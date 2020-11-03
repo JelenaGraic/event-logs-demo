@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { EventDto } from '../dto-models/eventDto';
 import { EventPagedResponseDto } from '../dto-models/eventPagedResponseDto';
-import { Filter } from '../../../../event-log/src/lib/+common/filters.model';
 
 
 const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'alarm', time: Date.now()},
@@ -24,35 +23,27 @@ const EVENTS: EventDto[] = [{id: 0, name: 'ev1', payload: 'payl1', logLevel: 'al
 })
 export class EventService {
 
-  private eventsResponse: EventPagedResponseDto ={
-    events: [],
-    page: 1,
-    pageSize: 5,
-    totalNumber: 5
-  };
 
-  constructor() { 
-    for (let event of EVENTS) {
-      this.eventsResponse.events.push(new EventDto (event));
-    }
-    this.eventsResponse.totalNumber = this.eventsResponse.events.length;
+  constructor() { }
+
+  getAll (): Observable<EventDto[]> {
+      return of(EVENTS) ;
   }
 
-  getAll (
-    //page: number, pageSize: number, sort: string, sortDirection: string, filters?: Filter
-    ): Observable<EventDto[]> {
+  getPagedResponse (page= 0, size= 5, sortField= "name", sortDirection= "asc", dateFrom= null, dateTo = new Date(Date.now()), search= ''): Observable<EventPagedResponseDto> {
 
-      return of(this.eventsResponse.events) ;
-
-    // let result = new EventPagedResponseDto(this.eventsResponse);   
-
-    // return of (new EventPagedResponseDto ({
-    //   events: result.events.slice((page*pageSize - pageSize) , (page*pageSize)),
-    //   totalNumber: result.totalNumber,
-    //   page: result.page,
-    //   pageSize: result.pageSize
-    // }))
-
+    let eventPagedRes: EventPagedResponseDto = {
+      events: EVENTS.slice((page*size - size), (page*size)),
+      totalNumber: EVENTS.length,
+      page: page,
+      pageSize: size,
+      sort: sortField,
+      sortDirection: sortDirection,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      search: search
     }
+    return of (eventPagedRes);
+  }
 
 }
