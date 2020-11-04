@@ -26,11 +26,8 @@ export class EventService {
 
   constructor() { }
 
-  getAll (): Observable<EventDto[]> {
-      return of(EVENTS) ;
-  }
-
-  getPagedResponse (page= 0, size= 5, sortField= "name", sortDirection= "asc", dateFrom= null, dateTo = new Date(Date.now()), search= ''): Observable<EventPagedResponseDto> {
+  getPagedResponse (page: number, size: number, sortField: string, sortDirection: string, dateFrom: Date, 
+                    dateTo: Date, logLevels: string): Observable<EventPagedResponseDto> {
 
     let eventPagedRes: EventPagedResponseDto = {
       events: EVENTS.slice((page*size - size), (page*size)),
@@ -41,7 +38,7 @@ export class EventService {
       sortDirection: sortDirection,
       dateFrom: dateFrom,
       dateTo: dateTo,
-      search: search
+      logLevels: logLevels
     }
     return of (eventPagedRes);
   }

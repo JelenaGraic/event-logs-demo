@@ -2,7 +2,7 @@
 <div>
 <div>
         
-    <mat-list *ngFor="let item of result" class="event-list">
+    <mat-list *ngFor="let item of eventsPagedResult.events" class="event-list">
         <mat-list-item>
         {{item.name}}<br>
         {{item.payload}}<br>
@@ -13,7 +13,7 @@
  
 </div>
 
-<!-- <div class="pagination">
+<div class="pagination">
       <ul>        
         <li class="page-item" (click)="pageSelected(activePage-1)" *ngIf="activePage>1">
             <a>Previous</a>
@@ -25,6 +25,6 @@
             <a>Next</a>
         </li>     
       </ul>
-</div> -->
+</div>
     
 </div>

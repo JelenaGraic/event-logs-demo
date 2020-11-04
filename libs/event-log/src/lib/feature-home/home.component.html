@@ -1,16 +1,13 @@
-<demo-ui-events-filter>
+<demo-ui-events-filter (newFilters)="changeFilters($event)"
+                        [filters]="filters$|async"
+                        
+                        >
 </demo-ui-events-filter>
 
 <event-logs-event-list
-     [result]="eventResult$|async" >
+     [eventsPagedResult]="eventsPagedResult$|async"
+     [pagination]="pagination$|async"
+     
+     (onPageSelected)="changePage($event)"
+     >
     </event-logs-event-list>
-
-<!-- 
-    (filterFields)="changeFilters($event)"
-    [filters$]="filters$"
-
-
-
-    [pageSize]="this.pageSize" 
-    (changePage)="putNewPage($event)"
-    (onPageSelected)="changePage($event)" -->

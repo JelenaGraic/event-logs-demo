@@ -9,7 +9,7 @@ export class EventPagedResponseDto {
     sortDirection: string;
     dateFrom: Date;
     dateTo: Date;
-    search: string;
+    logLevels: string;
 
     constructor(events: EventDto[], page: number, pageSize: number, totalNumber: number, sort: string, sortDirection: string,
                 dateFrom: Date, dateTo: Date, search: string) {
@@ -21,6 +21,6 @@ export class EventPagedResponseDto {
         this.sortDirection = sortDirection;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
-        this.search = search;
+        this.logLevels = search;
     }
 }

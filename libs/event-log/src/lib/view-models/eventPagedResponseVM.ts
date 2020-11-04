@@ -5,4 +5,9 @@ export interface EventPagedResponseVM {
     page: number;
     pageSize: number;
     totalNumber: number;
+    sort: string;
+    sortDirection: string;
+    dateFrom: Date;
+    dateTo: Date;
+    logLevels: string;
 }

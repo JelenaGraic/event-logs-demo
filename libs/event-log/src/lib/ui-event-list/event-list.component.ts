@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
-import { EventVM } from '../view-models/eventVM';
 
 @Component({
   selector: 'event-logs-event-list',
@@ -11,42 +9,36 @@ import { EventVM } from '../view-models/eventVM';
 })
 export class EventListComponent implements OnInit {
 
-  @Input() result: EventVM[];
-  //@Input() pageSize;
+  @Input() eventsPagedResult: EventPagedResponseVM;
+  @Input() pagination;
 
-  //@Output() onPageSelected: EventEmitter<number>;
-  //@Output() page: EventEmitter<number>;
-  //pages: number[];
+   @Output() onPageSelected: EventEmitter<number>;
+   
+   pages: number[];
 
-  activePage =1;
+   activePage =1;
 
   constructor() {
-    // this.onPageSelected = new EventEmitter();
-    // this.page = new EventEmitter();
+     this.onPageSelected = new EventEmitter();
    }
 
   ngOnInit(): void {
-    // this.pages = [];
-    // for (let i = 1; i <= this.getNoPages(); i++){
-    //   this.pages.push(i);
-    // } 
+    this.pages = [];
+    for (let i = 1; i <= this.getNoPages(); i++){
+      this.pages.push(i);
+    }
+       
   }
 
-  //  getNoPages(): number {
-  //   return Math.ceil(this.result.totalNumber/this.pageSize) ;
-    
-    
-  // }
+   getNoPages(): number {    
+    return Math.ceil(this.eventsPagedResult.totalNumber/this.pagination.pageSize) ;
+  }
 
-  // changePage(newPage: number) {
-  //   this.page.emit(newPage);
-  // }
-
-  // pageSelected (newPage: number) {
-  //   if (newPage >=1 && newPage <= this.getNoPages()) {
-  //     this.activePage = newPage;
-  //     this.onPageSelected.emit(this.activePage);
-  //   }
-  // }
+  pageSelected (newPage: number) {
+    if (newPage >=1 && newPage <= this.getNoPages()) {
+      this.activePage = newPage;
+      this.onPageSelected.emit(this.activePage);
+    }
+  }
 
 }
