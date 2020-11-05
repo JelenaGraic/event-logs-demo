@@ -18,7 +18,7 @@ export const initialState: FilterState = {
     logLevels: null
   },
   pagination: {
-    page: 0,
+    page: 1,
     pageSize: 5
   },
   sort: {

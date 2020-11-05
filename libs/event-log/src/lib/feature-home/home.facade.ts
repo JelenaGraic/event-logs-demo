@@ -1,12 +1,12 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '@event-logs/data-access';
 import { select, Store } from '@ngrx/store';
-import * as fromEventLogs from './reducers/filters.reducer';
-import * as EventLogsSelectors from './selectors/filters.selector';
-import * as fromEventActions from './actions/filters.action';
+import * as fromEventLogs from '../+state/reducers/filters.reducer';
+import * as EventLogsSelectors from '../+state/selectors/filters.selector';
+import * as fromEventActions from '../+state/actions/filters.action';
 import { EventLogLevel } from '../+common/filters.model';
 import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
-import { BehaviorSubject, Observable, pipe} from 'rxjs';
+import { BehaviorSubject, Observable, pipe, Subscription} from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
@@ -19,13 +19,14 @@ const initialValues: EventPagedResponseVM = {
   sortDirection: '',
   dateFrom: null,
   dateTo: null,
-  logLevels: ''
+  logLevels: null
 };
 
 
 @Injectable()
-export class EventLogsFacade 
+export class HomeFacade implements OnInit, OnDestroy
 {
+  private subscriptions: Subscription[] = [];
 
   private eventLogsSubject = new BehaviorSubject<EventPagedResponseVM>(initialValues);
   eventLogs$ = this.eventLogsSubject.asObservable();
@@ -36,16 +37,20 @@ export class EventLogsFacade
 
   constructor(private filterStore: Store<fromEventLogs.FilterState>, private eventService: EventService) {
 
-      // combineLatest([this.filters$, this.pagination$, this.sort$]).pipe(map([filter, pagination, sort]) => {
-      // })
+    const querySubscription = combineLatest([this.filters$, this.pagination$, this.sort$]).pipe(
+      switchMap(([filter, pagination, sort]) => {
+        return this.eventService.getPagedResponse(pagination.page, pagination.pageSize, sort.sortField, sort.sortDirection, filter.dateFrom, filter.dateTo, filter.logLevels).pipe(
+          tap(data => {
+            this.eventLogsSubject.next(data)})
+        )
+      })
+    ).subscribe();
+
+    this.subscriptions.push(querySubscription);
+      
   }
 
-  getPagedResponse (page= 1, size= 5, sortField= "name", sortDirection= "asc", dateFrom= null, 
-                    dateTo = new Date(Date.now()), logLevels= '') {  
-
-      this.eventService.getPagedResponse(page, size, sortField, sortDirection, dateFrom, dateTo, logLevels).subscribe(
-        data => this.eventLogsSubject.next(data));
-  }
+  ngOnInit() {}
 
   setPage(page?: number, pageSize=5) {
     this.filterStore.dispatch(fromEventActions.applyPagination({pagination: {page: page, pageSize: pageSize}}))
@@ -57,6 +62,11 @@ export class EventLogsFacade
 
   setSort(sortField: string, sortDirection: string) {
     this.filterStore.dispatch(fromEventActions.applySort({sort: {sortField: sortField, sortDirection: sortDirection}}))
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
   }
 
 }

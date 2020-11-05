@@ -8,6 +8,6 @@ export interface Filter {
 export enum EventLogLevel {
   all,
   info,
-  worning,
+  warning,
   alarm
 }

@@ -1,11 +1,13 @@
+import { EventLogLevel } from './logLevels.model';
+
 export class EventDto {
     id: number;
     name: string;
     payload: string;
-    logLevel: string;
+    logLevel: EventLogLevel;
     time: number;
   
-    constructor(id: number, name: string, payload: string, logLevel: string, time: number) {
+    constructor(id: number, name: string, payload: string, logLevel: EventLogLevel, time: number) {
         this.id = id;
         this.name = name;
         this.payload = payload;
@@ -13,3 +15,4 @@ export class EventDto {
         this.time = time;
     }
   }
+

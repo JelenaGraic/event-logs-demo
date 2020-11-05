@@ -1,3 +1,4 @@
+import { EventLogLevel } from '../+common/filters.model';
 import { EventVM } from './eventVM';
 
 export interface EventPagedResponseVM {
@@ -9,5 +10,5 @@ export interface EventPagedResponseVM {
     sortDirection: string;
     dateFrom: Date;
     dateTo: Date;
-    logLevels: string;
+    logLevels: EventLogLevel;
 }
