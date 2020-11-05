@@ -12,7 +12,7 @@ import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.com
 
 @NgModule({
   imports: [
-    CommonModule, 
+    CommonModule,
     DataAccessModule,
     MaterialModule,
     HttpClientModule,
@@ -21,6 +21,13 @@ import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.com
     StoreModule.forFeature('appState', reducers)
   ],
   declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent],
-  exports: [HomeComponent, EventListComponent, HttpClientModule,FormsModule, ReactiveFormsModule, UiEventsFilterComponent],
+  exports: [
+    HomeComponent,
+    EventListComponent,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    UiEventsFilterComponent,
+  ]
 })
 export class EventLogModule {}

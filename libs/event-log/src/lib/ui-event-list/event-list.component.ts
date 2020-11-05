@@ -1,41 +1,37 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../+state/index';
-import { changePage } from '../+state/actions/filters.action';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-event-list',
   templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.scss']
+  styleUrls: ['./event-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventListComponent implements OnInit {
 
-  @Input() result;
-  @Input() pageSize;
-  @Input() page;
-  activePage =1;
-  @Input() totalNumber;
-  @Output() onPageSelected: EventEmitter<number>;
-  pages: number[];
+  @Input() eventsPagedResult: EventPagedResponseVM;
+  @Input() pagination;
 
-  constructor(private store: Store<AppState>) {
-    this.onPageSelected = new EventEmitter();
+   @Output() onPageSelected: EventEmitter<number>;
+   
+   pages: number[];
+
+   activePage =1;
+
+  constructor() {
+     this.onPageSelected = new EventEmitter();
    }
 
   ngOnInit(): void {
-
     this.pages = [];
     for (let i = 1; i <= this.getNoPages(); i++){
       this.pages.push(i);
-    } 
+    }
+       
   }
 
-   getNoPages() :number{
-     return Math.ceil(this.totalNumber/this.pageSize);
-  }
-
-  changePage(page: number) {
-    this.store.dispatch(changePage({page}));
+   getNoPages(): number {    
+    return Math.ceil(this.eventsPagedResult.totalNumber/this.pagination.pageSize) ;
   }
 
   pageSelected (newPage: number) {

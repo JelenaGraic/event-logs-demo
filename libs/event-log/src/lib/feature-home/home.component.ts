@@ -1,68 +1,43 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EventService } from '@event-logs/data-access';
-import { AppState } from '../+state/index';
-import { select, Store } from '@ngrx/store';
-import * as fromAction from '../+state/actions/filters.action';
+import { Component, OnInit } from '@angular/core';
 import { Filter } from '../+common/filters.model';
-import { selectFilter, selectPage } from '../+state/selectors/filters.selector';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { HomeFacade } from './home.facade';
+import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
+import { map } from 'rxjs/operators';
+import { Pagination } from '../+common/pagination.model';
 
 @Component({
   selector: 'event-logs-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [HomeFacade]
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
-  result;
-  totalNumber: number;
-  filters$: Observable<Filter>;
+  vm$: Observable<{eventsPagedResult: EventPagedResponseVM, filters: Filter, pagination: Pagination}>;
 
-  eventListSub: Subscription;
-  pageSub: Subscription;
+  eventsPagedResult$: Observable<EventPagedResponseVM> = this.eventLogFacade.eventLogs$;
+  filters$: Observable<Filter>= this.eventLogFacade.filters$;
+  pagination$ = this.eventLogFacade.pagination$;
 
-  page: number;
-  pageSize= 5;
-  filters: Filter;
-  sort = "name";
-  sortDirection = "asc";
+  constructor(private eventLogFacade: HomeFacade) {
 
-  dateFrom;
-  dateTo;
-  logLevels;
-
-  constructor(private service: EventService, private store: Store<AppState>) {
-
+    this.vm$ = combineLatest([this.eventsPagedResult$, this.filters$, this.pagination$]).pipe(
+      map(([eventsPagedResult, filters, pagination])=> {
+        return { eventsPagedResult, filters, pagination }
+      }))
+    
    }
 
-  ngOnInit(): void {
-    this.filters$ = this.store.pipe(select(selectFilter));
-    this.pageSub = this.store.pipe(select(selectPage)).subscribe(data => this.page = data);    
-    this.refresh(); 
-  }
-
-  refresh() {
-    this.eventListSub =this.service.getAll(this.page, this.pageSize, this.sort, this.sortDirection, this.filters).subscribe(
-      data => {
-        this.result = data.events,
-        this.totalNumber = data.totalNumber       
-      }
-    )
+  ngOnInit(): void { 
   }
 
   changePage (newPage: number) {
-    this.page = newPage;
-    this.refresh();
-    this.store.dispatch(fromAction.changePage({page: newPage}))
-  }
-
-  ngOnDestroy() {
-    this.eventListSub.unsubscribe();
-    this.pageSub.unsubscribe();
+    this.eventLogFacade.setPage(newPage);
   }
 
   changeFilters (event) {
-    this.store.dispatch(fromAction.filterEvents({filters: event})); 
-    this.filters = event;
-  }
+    this.eventLogFacade.setFilter(event.dateFrom, event.dateTo, event.logLevels);
+   }
+
 }

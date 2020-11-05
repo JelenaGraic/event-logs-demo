@@ -1,2 +1,2 @@
 export * from './lib/data-access.module';
-export * from '../src/lib/event.service';
+export * from './lib/services/event.service';

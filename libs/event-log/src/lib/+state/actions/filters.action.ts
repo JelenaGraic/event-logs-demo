@@ -1,14 +1,21 @@
 import { createAction, props } from '@ngrx/store';
 import { Filter } from '../../+common/filters.model';
+import { Pagination } from '../../+common/pagination.model';
+import { Sort } from '../../+common/sort.model';
 
 //get filters
 
-export const filterEvents = createAction(
-    '[Home Component] Filter Events', 
+export const applyFilter = createAction(
+    '[Ui-Event-Filters Component] Filter Events', 
     props<{filters: Filter}>()
   );
 
-export const changePage = createAction(
-    '[Event-list Component] Filter Events', 
-    props<{page: number}>()
+export const applyPagination = createAction(
+    '[Event-list Component] Change Pagination', 
+    props<{pagination: Pagination}>()
   );
+
+export const applySort = createAction(
+  '[Event-list Component] Change Sort',
+  props<{sort: Sort}>()
+)

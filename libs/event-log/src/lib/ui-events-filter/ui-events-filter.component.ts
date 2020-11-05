@@ -1,19 +1,18 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { Filter } from '../+common/filters.model';
 
 @Component({
   selector: 'demo-ui-events-filter',
   templateUrl: './ui-events-filter.component.html',
-  styleUrls: ['./ui-events-filter.component.scss']
+  styleUrls: ['./ui-events-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UiEventsFilterComponent implements OnInit, OnDestroy {
+export class UiEventsFilterComponent implements OnInit {
 
-   @Output() filterFields: EventEmitter<Filter>;
-   @Input() filters$;
-  filters: Subscription;
+  @Output() newFilters: EventEmitter<Filter>;
+   @Input() filters;
 
 
   filterForm = new FormGroup ({
@@ -23,7 +22,7 @@ export class UiEventsFilterComponent implements OnInit, OnDestroy {
   });
 
   constructor(private fb: FormBuilder) {
-    this.filterFields = new EventEmitter();
+    this.newFilters = new EventEmitter();
     this.createForm();
    }
  
@@ -31,22 +30,17 @@ export class UiEventsFilterComponent implements OnInit, OnDestroy {
     this.filterForm = this.fb.group({
       dateFrom:'',
       dateTo: '',
-      logLevels: 'all'
+      logLevels: ''
     })
   }
   
 
-  ngOnInit(): void {
-    this.filters = this.filters$.subscribe((res) => this.filterForm.patchValue(res));
-  }
+   ngOnInit(): void {
+      this.filterForm.patchValue(this.filters);
+   }
 
-  sendFilter() {
-    let filters: Filter = this.filterForm.value;
-    this.filterFields.emit(filters);
-  }
-  
-  ngOnDestroy() {
-    this.filters.unsubscribe();
-  }
+   sendFilter() {
+    this.newFilters.emit(this.filterForm.value);
+   }
 
 }
