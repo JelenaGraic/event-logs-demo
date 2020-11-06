@@ -4,12 +4,9 @@ import { select, Store } from '@ngrx/store';
 import * as fromEventLogs from '../+state/reducers/filters.reducer';
 import * as EventLogsSelectors from '../+state/selectors/filters.selector';
 import * as fromEventActions from '../+state/actions/filters.action';
-import { EventLogLevel } from '../+common/filters.model';
 import { BehaviorSubject, Observable, pipe, Subscription} from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { EventLogModule } from '../event-log.module';
-import { EventLogDto } from '../../../../data-access/src/lib/dto-models/eventLogDto';
 import { EventLogVM } from '../view-models/eventLogVM';
 
 // const initialValues: EventPagedResponseVM = {

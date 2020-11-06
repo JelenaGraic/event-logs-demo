@@ -9,8 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './+state/index';
 import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.component';
-import { UiDevicesComponent } from './ui-devices/ui-devices.component';
-import { UiSemanticsComponent } from './ui-semantics/ui-semantics.component';
+import { UiEventLogsComponent } from './ui-event-logs/ui-devices.component';
 
 @NgModule({
   imports: [
@@ -22,7 +21,7 @@ import { UiSemanticsComponent } from './ui-semantics/ui-semantics.component';
     ReactiveFormsModule,
     StoreModule.forFeature('appState', reducers)
   ],
-  declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent, UiDevicesComponent, UiSemanticsComponent],
+  declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent, UiEventLogsComponent],
   exports: [
     HomeComponent,
     EventListComponent,
@@ -30,6 +29,7 @@ import { UiSemanticsComponent } from './ui-semantics/ui-semantics.component';
     FormsModule,
     ReactiveFormsModule,
     UiEventsFilterComponent,
+    UiEventLogsComponent
   ]
 })
 export class EventLogModule {}

@@ -34,6 +34,18 @@ export class EventLogService {
     return of(EVENT_LOGS);
   }
 
+  getPagedResponse (page: number, size: number, from: Date, to: Date): Observable<EventLogPagedResponseDto> {
+    const eventLogPagedResponse: EventLogPagedResponseDto = {
+      eventLogs: EVENT_LOGS.slice((page*size - size), (page*size)),
+      totalNumber: EVENT_LOGS.length,
+      page: page,
+      pageSize: size,
+      from: from,
+      to: to
+    }
+      return of(eventLogPagedResponse);
+  }
+
   // getPagedResponse (page: number, size: number, sortField: string, sortDirection: string, dateFrom: Date, 
   //                   dateTo: Date, logLevels: EventLogLevel): Observable<EventPagedResponseDto> {
 
