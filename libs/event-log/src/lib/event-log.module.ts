@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './+state/index';
 import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.component';
+import { UiDevicesComponent } from './ui-devices/ui-devices.component';
+import { UiSemanticsComponent } from './ui-semantics/ui-semantics.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,7 @@ import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.com
     ReactiveFormsModule,
     StoreModule.forFeature('appState', reducers)
   ],
-  declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent],
+  declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent, UiDevicesComponent, UiSemanticsComponent],
   exports: [
     HomeComponent,
     EventListComponent,

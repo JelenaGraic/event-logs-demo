@@ -1,14 +1,19 @@
-import { EventLogLevel } from '../+common/filters.model';
-import { EventVM } from './eventVM';
+import { EventLogVM } from './eventLogVM';
 
-export interface EventPagedResponseVM {
-    events: EventVM[];
+export class EventLogPagedResponseVM {
+    events: EventLogVM[];
     page: number;
     pageSize: number;
     totalNumber: number;
-    sort: string;
-    sortDirection: string;
-    dateFrom: Date;
-    dateTo: Date;
-    logLevels: EventLogLevel;
+    from: Date;
+    to: Date;
+
+    constructor(events: EventLogVM[], page: number, pageSize: number, totalNumber: number, from: Date, to: Date) {
+        this.events = events;
+        this.page = page;
+        this.pageSize = pageSize;
+        this.totalNumber = totalNumber;
+        this.from = from;
+        this.to = to;
+    }
 }

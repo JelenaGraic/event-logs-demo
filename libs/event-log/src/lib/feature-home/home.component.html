@@ -1,4 +1,4 @@
-<div *ngIf="vm$|async as vm">
+<!-- <div *ngIf="vm$|async as vm">
      <demo-ui-events-filter (newFilters)="changeFilters($event)"
                              [filters]="vm.filters"
                              
@@ -12,5 +12,12 @@
                (onPageSelected)="changePage($event)"
                >
      </event-logs-event-list>
+</div> -->
+
+<button mat-button>Devices</button>
+<button mat-button>Semantics</button>
+<div>
+     <demo-ui-devices [eventLogs] = "eventLogs$ | async"></demo-ui-devices>
+     <demo-ui-semantics></demo-ui-semantics>   
 </div>
 

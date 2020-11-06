@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
+import { EventLogPagedResponseVM } from '../view-models/eventPagedResponseVM';
 
 @Component({
   selector: 'event-logs-event-list',
@@ -9,7 +9,7 @@ import { EventPagedResponseVM } from '../view-models/eventPagedResponseVM';
 })
 export class EventListComponent implements OnInit {
 
-  @Input() eventsPagedResult: EventPagedResponseVM;
+  @Input() eventsPagedResult: EventLogPagedResponseVM;
   @Input() pagination;
 
    @Output() onPageSelected: EventEmitter<number>;

@@ -36,7 +36,7 @@ export const reduce = createReducer (
           filter: {...action.filters},
           pagination: {
             ...state.pagination,
-            page: 0
+            page: 1
           } 
         }
       }
