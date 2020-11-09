@@ -8,7 +8,7 @@
 
 </div> -->
 
-<demo-ui-events-filter [filters]="filters$|async"></demo-ui-events-filter>
+<demo-ui-events-filter [filters]="filters$|async" (newFilters)="applyFilters($event)"></demo-ui-events-filter>
 
 <table mat-table class="mat-elevation-z8" [dataSource]="(eventLogs$ | async).events">
   

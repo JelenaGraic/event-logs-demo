@@ -11,8 +11,8 @@ export interface EventState {
 
 export const initialState: EventState = {
   filter: {
-    from: new Date(new Date().setHours(0,0,0,0)),
-    to: new Date(new Date().setHours(23,59,0,0))
+    from: new Date(new Date().setHours(1,0,0,0)),
+    to: new Date(new Date().setHours(24,59,0,0))
   },
   pagination: {
     page: 1,

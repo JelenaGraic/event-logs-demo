@@ -35,11 +35,14 @@ export class UiEventsFilterComponent implements OnInit {
 
    ngOnInit(): void {
       this.filterForm.patchValue(this.filters);
-      console.log(this.filterForm.value);
+      //console.log(this.filterForm.value);
       
    }
 
    sendFilter() {
+    //  let from = this.filterForm.get('from').value;
+    //  console.log(from);
+     
     this.newFilters.emit(this.filterForm.value);
     
    }

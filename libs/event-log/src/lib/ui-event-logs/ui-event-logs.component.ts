@@ -36,5 +36,8 @@ export class UiEventLogsComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  applyFilters(event: Filter){
+    this.eventLogFacade.setFilter(event)
+  }
 
 }
