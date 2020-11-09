@@ -1,18 +1,18 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { Filter } from '../../+common/filters.model';
 import { Pagination } from '../../+common/pagination.model';
-import * as fromAcitions from '../actions/filters.action';
+import * as fromAcitions from '../actions/events.action';
 
 
-export interface FilterState {
+export interface EventState {
   filter: Filter,
   pagination: Pagination
 }
 
-export const initialState: FilterState = {
+export const initialState: EventState = {
   filter: {
-    from: null,
-    to: null
+    from: new Date(new Date().setHours(0,0,0,0)),
+    to: new Date(new Date().setHours(23,59,0,0))
   },
   pagination: {
     page: 1,
@@ -44,9 +44,9 @@ export const reduce = createReducer (
     )
 )
 
-export function eventReducer (state: FilterState | undefined, action: Action) {
+export function eventReducer (state: EventState | undefined, action: Action) {
     return reduce(state, action);
 }
 
-export const getFilters = (state: FilterState) => state.filter;
-export const getPagination = (state: FilterState) => state.pagination;
+export const getFilters = (state: EventState) => state.filter;
+export const getPagination = (state: EventState) => state.pagination;

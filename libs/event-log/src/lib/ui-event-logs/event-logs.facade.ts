@@ -1,25 +1,23 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { EventLogService } from '@event-logs/data-access';
+import { EventLogPagedResponseDto, EventLogService } from '@event-logs/data-access';
 import { select, Store } from '@ngrx/store';
-import * as fromEventLogs from '../+state/reducers/filters.reducer';
-import * as EventLogsSelectors from '../+state/selectors/filters.selector';
-import * as fromEventActions from '../+state/actions/filters.action';
+import * as fromEventLogs from '../+state/reducers/events.reducer';
+import * as EventLogsSelectors from '../+state/selectors/events.selector';
+import * as fromEventActions from '../+state/actions/events.action';
 import { BehaviorSubject, Observable, pipe, Subscription} from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { EventLogVM } from '../view-models/eventLogVM';
+import { EventLogPagedResponseVM } from '../view-models/eventPagedResponseVM';
 
-// const initialValues: EventPagedResponseVM = {
-//   events: [],
-//   page: 0,
-//   pageSize: 0,
-//   totalNumber: 0,
-//   sort: '',
-//   sortDirection: '',
-//   dateFrom: null,
-//   dateTo: null,
-//   logLevels: null
-// };
+const initialValues: EventLogPagedResponseVM = {
+  events: [],
+  page: 0,
+  pageSize: 0,
+  totalNumber: 0,
+  from: null,
+  to: null
+};
 
 
 @Injectable()
@@ -30,34 +28,59 @@ export class EventLogsFacade implements OnInit, OnDestroy
   // private eventLogsSubject = new BehaviorSubject<EventPagedResponseVM>(initialValues);
   // eventLogs$ = this.eventLogsSubject.asObservable();
 
-  // pagination$ = this.filterStore.pipe(select(EventLogsSelectors.selectPages));
-  // filters$ = this.filterStore.pipe(select(EventLogsSelectors.selectFilter));  
-  // sort$ = this.filterStore.pipe(select(EventLogsSelectors.selectSort));
+   pagination$ = this.eventStore.pipe(select(EventLogsSelectors.selectPages));
+   filters$ = this.eventStore.pipe(select(EventLogsSelectors.selectFilter));  
 
-  private DevicesSubject = new BehaviorSubject<EventLogVM[]>([]);
+  private DevicesSubject = new BehaviorSubject<EventLogPagedResponseVM>(initialValues);
   allDevices$ = this.DevicesSubject.asObservable();
-  private SemanticsSubject = new BehaviorSubject<EventLogVM[]>([]);
+  private SemanticsSubject = new BehaviorSubject<EventLogPagedResponseVM>(initialValues);
   allSemantics$ = this.SemanticsSubject.asObservable();
 
-  constructor(private filterStore: Store<fromEventLogs.FilterState>, private eventLogService: EventLogService) {
+  constructor(private eventStore: Store<fromEventLogs.EventState>, private eventLogService: EventLogService) {
 
-    
-    const eventsSubscription = this.eventLogService.getAll().subscribe(data => {
-      const devicesList: EventLogVM[] = [];
-      const semanticList: EventLogVM[] = [];
-      for (let i = 0; i<data.length; i++){
-        if (data[i].originType === 'DEVICE') {
-          let dev = new EventLogVM(data[i]);       
-          devicesList.push(dev);      
-        } else {
-          let sem = new EventLogVM(data[i]);
-          semanticList.push(sem);
-        }
-      }     
-      this.DevicesSubject.next(devicesList);
-      this.SemanticsSubject.next(semanticList);        
+    const eventsSubscription = combineLatest([this.filters$, this.pagination$]).pipe(
+      switchMap(([filter, pagination]) => {
+        return this.eventLogService.getPagedResponse(pagination.page, pagination.pageSize, filter.from, filter.to).pipe(
+          tap(data => {
+
+            const devicesList: EventLogPagedResponseVM = {page:pagination.page, pageSize: pagination.pageSize, from: filter.from,
+            to: filter.to, events: [], totalNumber: 100};
+            const semanticList: EventLogPagedResponseVM = {page:pagination.page, pageSize: pagination.pageSize, from: filter.from,
+              to: filter.to, events: [], totalNumber: 100};
+
+            for (let i = 0; i<data.eventLogs.length; i++) {
+              if(data.eventLogs[i].originType === 'DEVICE'){
+                let device = new EventLogVM(data.eventLogs[i]);
+                devicesList.events.push(device);               
+              } else {
+                let semantic = new EventLogVM(data.eventLogs[i]);
+                semanticList.events.push(semantic);   
+              }
+            }
+            this.DevicesSubject.next(devicesList);
+            this.SemanticsSubject.next(semanticList);
+          })
+        )
+      })
+    ).subscribe();
+
+
+    //  this.eventLogService.getAll().subscribe(data => {
+    //   const devicesList: EventLogVM[] = [];
+    //   const semanticList: EventLogVM[] = [];
+    //   for (let i = 0; i<data.length; i++){
+    //     if (data[i].originType === 'DEVICE') {
+    //       let dev = new EventLogVM(data[i]);       
+    //       devicesList.push(dev);      
+    //     } else {
+    //       let sem = new EventLogVM(data[i]);
+    //       semanticList.push(sem);
+    //     }
+    //   }     
+    //   this.DevicesSubject.next(devicesList);
+    //   this.SemanticsSubject.next(semanticList);        
         
-    });
+    // });
 
     // const querySubscription = combineLatest([this.filters$, this.pagination$, this.sort$]).pipe(
     //   switchMap(([filter, pagination, sort]) => {

@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EventLogPagedResponseDto } from '@event-logs/data-access';
 import { Observable } from 'rxjs';
+import { Filter } from '../+common/filters.model';
 import { EventLogVM } from '../view-models/eventLogVM';
+import { EventLogPagedResponseVM } from '../view-models/eventPagedResponseVM';
 import { EventLogsFacade } from './event-logs.facade';
 
 
@@ -15,7 +18,8 @@ export class UiEventLogsComponent implements OnInit {
   displayedColumns: string[] = ['datetime', 'source', 'type', 'data'];
   
 
-  eventLogs$: Observable<EventLogVM[]>;
+  eventLogs$: Observable<EventLogPagedResponseVM>;
+  filters$: Observable<Filter>= this.eventLogFacade.filters$;
   
 
   constructor(private eventLogFacade: EventLogsFacade, private route: ActivatedRoute) {

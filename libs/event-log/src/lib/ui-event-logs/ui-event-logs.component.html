@@ -1,4 +1,16 @@
-<table mat-table class="mat-elevation-z8" [dataSource]="eventLogs$ | async">
+<!-- <div *ngIf="vm$|async as vm">
+     <demo-ui-events-filter (newFilters)="changeFilters($event)"
+                             [filters]="vm.filters"
+                             
+                             >
+     </demo-ui-events-filter>
+
+
+</div> -->
+
+<demo-ui-events-filter [filters]="filters$|async"></demo-ui-events-filter>
+
+<table mat-table class="mat-elevation-z8" [dataSource]="(eventLogs$ | async).events">
   
     <!-- Position Column -->
     <ng-container matColumnDef="datetime">
@@ -27,3 +39,12 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+
+  <!-- <event-logs-event-list
+  [eventsPagedResult]="vm.eventsPagedResult"
+  [pagination]="vm.pagination"
+
+  (onPageSelected)="changePage($event)"
+  >
+</event-logs-event-list> -->

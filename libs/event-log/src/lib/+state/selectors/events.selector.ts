@@ -1,19 +1,19 @@
 import { createSelector } from '@ngrx/store';
 import * as FromAppState from '../index';
-import { getFilters, getPagination } from '../reducers/filters.reducer';
+import { getFilters, getPagination } from '../reducers/events.reducer';
 
 
-export const getFilterState = createSelector(
+export const getEventState = createSelector(
     FromAppState.selectAppState,
-    (state: FromAppState.AppState) => state.filters
+    (state: FromAppState.AppState) => state.events
   );
 
 export const selectFilter = createSelector(
-    getFilterState,
+  getEventState,
       getFilters
 );
 
 export const selectPages = createSelector(
-    getFilterState,
+  getEventState,
       getPagination
 );

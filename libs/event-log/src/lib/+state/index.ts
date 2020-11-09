@@ -1,15 +1,15 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
-import * as fromFiltersReducer from './reducers/filters.reducer';
+import * as fromEventsReducer from './reducers/events.reducer';
 
 
 export const appStateFeatureKey = 'appState';
 
 export interface AppState {
-   filters: fromFiltersReducer.FilterState   
+   events: fromEventsReducer.EventState   
 }
 
 export const reducers: ActionReducerMap <AppState> = {
-    filters: fromFiltersReducer.reduce               
+    events: fromEventsReducer.reduce               
 }
 
 export const selectAppState = createFeatureSelector<AppState>(
