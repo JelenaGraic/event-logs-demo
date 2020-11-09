@@ -49,15 +49,20 @@ export class EventLogsFacade implements OnInit, OnDestroy
             for (let i = 0; i<data.eventLogs.length; i++) {
               if(data.eventLogs[i].originType === 'DEVICE'){
                 let device = new EventLogVM(data.eventLogs[i]);
-                devicesList.events.push(device); 
-                devicesList.totalNumber = devicesList.events.length;              
+                devicesList.events.push(device);              
               } else {
                 let semantic = new EventLogVM(data.eventLogs[i]);
-                semanticList.events.push(semantic);
-                semanticList.totalNumber = semanticList.events.length;  
+                semanticList.events.push(semantic);       
               }
             }
-            this.DevicesSubject.next(devicesList);
+            devicesList.totalNumber = devicesList.events.length;
+            devicesList.events = devicesList.events.splice(
+                (pagination.page*pagination.pageSize - pagination.pageSize), (pagination.page*pagination.pageSize)); 
+            this.DevicesSubject.next(devicesList);    
+
+            semanticList.totalNumber = semanticList.events.length;  
+            semanticList.events = semanticList.events.splice(
+                  (pagination.page*pagination.pageSize - pagination.pageSize), (pagination.page*pagination.pageSize)); 
             this.SemanticsSubject.next(semanticList);
           })
         )
@@ -70,9 +75,9 @@ export class EventLogsFacade implements OnInit, OnDestroy
 
   ngOnInit() {}
 
-  // setPage(page?: number, pageSize=5) {
-  //   this.filterStore.dispatch(fromEventActions.applyPagination({pagination: {page: page, pageSize: pageSize}}))
-  // }
+  setPage(page?: number, pageSize=5) {
+    this.eventStore.dispatch(fromEventActions.applyPagination({pagination: {page: page, pageSize: pageSize}}))
+  }
 
   setFilter(filters: Filter) {
     this.eventStore.dispatch(fromEventActions.applyFilter(

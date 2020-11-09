@@ -1,36 +1,28 @@
-<!-- <div *ngIf="vm$|async as vm">
-     <demo-ui-events-filter (newFilters)="changeFilters($event)"
-                             [filters]="vm.filters"
-                             
-                             >
-     </demo-ui-events-filter>
+<div *ngIf="vm$|async as vm">
 
+<demo-ui-events-filter [filters]="vm.filters" (newFilters)="applyFilters($event)"></demo-ui-events-filter>
 
-</div> -->
-
-<demo-ui-events-filter [filters]="filters$|async" (newFilters)="applyFilters($event)"></demo-ui-events-filter>
-
-<table mat-table class="mat-elevation-z8" [dataSource]="(eventLogs$ | async).events">
+  <table mat-table class="mat-elevation-z8" [dataSource]="vm.eventLogs.events">
   
-    <!-- Position Column -->
+
     <ng-container matColumnDef="datetime">
       <th mat-header-cell *matHeaderCellDef> Datetime </th>
       <td mat-cell *matCellDef="let eventLog"> {{eventLog.timestamp}} </td>
     </ng-container>
   
-    <!-- Name Column -->
+
     <ng-container matColumnDef="source">
       <th mat-header-cell *matHeaderCellDef> Source </th>
       <td mat-cell *matCellDef="let eventLog"> {{eventLog.sourceType}} </td>
     </ng-container>
   
-    <!-- Weight Column -->
+
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> Type </th>
       <td mat-cell *matCellDef="let eventLog"> {{eventLog.type}} </td>
     </ng-container>
   
-    <!-- Symbol Column -->
+
     <ng-container matColumnDef="data">
       <th mat-header-cell *matHeaderCellDef> Data </th>
       <td mat-cell *matCellDef="let eventLog"> {{eventLog.data}} </td>
@@ -38,13 +30,13 @@
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
   </table>
 
+  <mat-paginator  [length]="vm.eventLogs.totalNumber"
+                  [pageSize]="vm.eventLogs.pageSize"
+                  [pageSizeOptions]="[5, 10, 25, 100]"
+                  (page)="onPageChange($event)">
+  </mat-paginator>
 
-  <!-- <event-logs-event-list
-  [eventsPagedResult]="vm.eventsPagedResult"
-  [pagination]="vm.pagination"
-
-  (onPageSelected)="changePage($event)"
-  >
-</event-logs-event-list> -->
+</div>
