@@ -1,4 +1,4 @@
-<table mat-table class="mat-elevation-z8" [dataSource]="eventLogs">
+<table mat-table class="mat-elevation-z8" [dataSource]="eventLogs$ | async">
   
     <!-- Position Column -->
     <ng-container matColumnDef="datetime">

@@ -9,7 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './+state/index';
 import { UiEventsFilterComponent } from './ui-events-filter/ui-events-filter.component';
-import { UiEventLogsComponent } from './ui-event-logs/ui-devices.component';
+import { UiEventLogsComponent } from './ui-event-logs/ui-event-logs.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { UiEventLogsComponent } from './ui-event-logs/ui-devices.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forFeature('appState', reducers)
+    StoreModule.forFeature('appState', reducers),
+    RouterModule
   ],
   declarations: [HomeComponent, EventListComponent, UiEventsFilterComponent, UiEventLogsComponent],
   exports: [

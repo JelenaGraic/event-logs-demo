@@ -23,9 +23,9 @@ import { EventLogVM } from '../view-models/eventLogVM';
 
 
 @Injectable()
-export class HomeFacade implements OnInit, OnDestroy
+export class EventLogsFacade implements OnInit, OnDestroy
 {
-  // private subscriptions: Subscription[] = [];
+   private subscriptions: Subscription[] = [];
 
   // private eventLogsSubject = new BehaviorSubject<EventPagedResponseVM>(initialValues);
   // eventLogs$ = this.eventLogsSubject.asObservable();
@@ -34,19 +34,29 @@ export class HomeFacade implements OnInit, OnDestroy
   // filters$ = this.filterStore.pipe(select(EventLogsSelectors.selectFilter));  
   // sort$ = this.filterStore.pipe(select(EventLogsSelectors.selectSort));
 
-  private allEventLogsSubject = new BehaviorSubject<EventLogVM[]>([]);
-  allEventLogs$ = this.allEventLogsSubject.asObservable();
+  private DevicesSubject = new BehaviorSubject<EventLogVM[]>([]);
+  allDevices$ = this.DevicesSubject.asObservable();
+  private SemanticsSubject = new BehaviorSubject<EventLogVM[]>([]);
+  allSemantics$ = this.SemanticsSubject.asObservable();
 
   constructor(private filterStore: Store<fromEventLogs.FilterState>, private eventLogService: EventLogService) {
 
     
-    this.eventLogService.getAll().subscribe(data => {
-      const vmList: EventLogVM[] = [];
-      for (let i = 0; i<data.length; i++){        
-        let vm = new EventLogVM(data[i].timestamp, data[i].sourceType, data[i].type, data[i].data);       
-        vmList.push(vm);      
+    const eventsSubscription = this.eventLogService.getAll().subscribe(data => {
+      const devicesList: EventLogVM[] = [];
+      const semanticList: EventLogVM[] = [];
+      for (let i = 0; i<data.length; i++){
+        if (data[i].originType === 'DEVICE') {
+          let dev = new EventLogVM(data[i]);       
+          devicesList.push(dev);      
+        } else {
+          let sem = new EventLogVM(data[i]);
+          semanticList.push(sem);
+        }
       }     
-      this.allEventLogsSubject.next(vmList); 
+      this.DevicesSubject.next(devicesList);
+      this.SemanticsSubject.next(semanticList);        
+        
     });
 
     // const querySubscription = combineLatest([this.filters$, this.pagination$, this.sort$]).pipe(
@@ -58,7 +68,7 @@ export class HomeFacade implements OnInit, OnDestroy
     //   })
     // ).subscribe();
 
-    // this.subscriptions.push(querySubscription);
+     this.subscriptions.push(eventsSubscription);
       
   }
 
@@ -77,8 +87,8 @@ export class HomeFacade implements OnInit, OnDestroy
   // }
 
   ngOnDestroy() {
-  //   this.subscriptions.forEach(s => s.unsubscribe());
-  //   this.subscriptions = [];
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
   }
 
 }
