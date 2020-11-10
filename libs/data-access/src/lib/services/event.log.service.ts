@@ -39,6 +39,13 @@ export class EventLogService {
       from: from,
       to: to
     }
+    const eventLogsWithFilters: EventLogDto[]=[];
+    for (let i = 0; i<EVENT_LOGS.length; i++){
+      if (EVENT_LOGS[i].timestamp >= Number(from) && (EVENT_LOGS[i].timestamp <= Number(to))) {             
+        eventLogsWithFilters.push(EVENT_LOGS[i]);      
+      }
+    }
+      eventLogPagedResponse.eventLogs = eventLogsWithFilters;
       return of(eventLogPagedResponse);
   }
 

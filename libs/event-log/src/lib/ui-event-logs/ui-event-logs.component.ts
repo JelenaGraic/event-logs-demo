@@ -47,12 +47,12 @@ export class UiEventLogsComponent implements OnInit {
   }
 
   applyFilters(event: Filter){
-    this.eventLogFacade.setFilter(event)
+    this.eventLogFacade.setFilter(event);
   }
 
   onPageChange(event) {
     console.log(event);
-    this.eventLogFacade.setPage(event.pageIndex+1);
+    this.eventLogFacade.setPage(event.pageIndex+1, event.pageSize);
   }
 
 }
