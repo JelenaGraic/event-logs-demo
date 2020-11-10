@@ -12,13 +12,12 @@ import { Filter } from '../+common/filters.model';
 export class UiEventsFilterComponent implements OnInit {
 
   @Output() newFilters: EventEmitter<Filter>;
-   @Input() filters;
+  @Input() filters;
 
 
   filterForm = new FormGroup ({
-    dateFrom: new FormControl(''),
-    dateTo: new FormControl(''),
-    logLevels: new FormControl('')
+    from: new FormControl(''),
+    to: new FormControl('')
   });
 
   constructor(private fb: FormBuilder) {
@@ -28,19 +27,18 @@ export class UiEventsFilterComponent implements OnInit {
  
    createForm() {
     this.filterForm = this.fb.group({
-      dateFrom:'',
-      dateTo: '',
-      logLevels: ''
+      from:'',
+      to: ''
     })
   }
   
 
    ngOnInit(): void {
-      this.filterForm.patchValue(this.filters);
+      this.filterForm.patchValue(this.filters);  
    }
 
-   sendFilter() {
-    this.newFilters.emit(this.filterForm.value);
+   sendFilter() { 
+    this.newFilters.emit(this.filterForm.value); 
    }
 
 }

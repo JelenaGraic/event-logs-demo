@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { EventLogModule } from '@event-logs/event-log';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,7 +15,8 @@ import { environment } from '../environments/environment';
     EventLogModule,
     BrowserAnimationsModule,
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25 })
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent],

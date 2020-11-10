@@ -1,13 +1,4 @@
 export interface Filter {
-    dateFrom: Date;
-    dateTo: Date;
-    logLevels: EventLogLevel;
+    from: Date;
+    to: Date;
   }
-
-  
-export enum EventLogLevel {
-  all,
-  info,
-  warning,
-  alarm
-}

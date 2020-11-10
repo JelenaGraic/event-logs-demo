@@ -1,16 +1,2 @@
-<div *ngIf="vm$|async as vm">
-     <demo-ui-events-filter (newFilters)="changeFilters($event)"
-                             [filters]="vm.filters"
-                             
-                             >
-     </demo-ui-events-filter>
-
-     <event-logs-event-list
-               [eventsPagedResult]="vm.eventsPagedResult"
-               [pagination]="vm.pagination"
-
-               (onPageSelected)="changePage($event)"
-               >
-     </event-logs-event-list>
-</div>
-
+<button mat-button [routerLink]="['/event-logs/', 'devices', '12345']">Devices</button>
+<button mat-button [routerLink]="['/event-logs/', 'semantics', '5678']">Semantics</button>

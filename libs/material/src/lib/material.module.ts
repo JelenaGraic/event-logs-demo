@@ -11,6 +11,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ScrollingModule,
     MatDividerModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTableModule
   ],
   exports: [
     MatDatepickerModule,
@@ -38,7 +40,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ScrollingModule,
     MatDividerModule,
     MatListModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTableModule
   ]
 })
 export class MaterialModule {}
